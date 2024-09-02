@@ -1,0 +1,341 @@
+package Entity;
+
+import java.util.Date;
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name = "Instructor")
+public class Instructor {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	private String firstName;
+	private String lastName;
+	private String address;
+	private float salary;
+	private float bouns;
+	private Date hire_date;
+	
+	public Instructor() {
+		
+	}
+
+	public Instructor(long id, String firstName, String lastName, String address, float salary, float bouns,
+			Date hire_date) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.salary = salary;
+		this.bouns = bouns;
+		this.hire_date = hire_date;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public float getSalary() {
+		return salary;
+	}
+
+	public void setSalary(float salary) {
+		this.salary = salary;
+	}
+
+	public float getBouns() {
+		return bouns;
+	}
+
+	public void setBouns(float bouns) {
+		this.bouns = bouns;
+	}
+
+	public Date getHire_date() {
+		return hire_date;
+	}
+
+	public void setHire_date(Date hire_date) {
+		this.hire_date = hire_date;
+	}
+
+	@Override
+	public String toString() {
+		return "Instructor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
+				+ ", salary=" + salary + ", bouns=" + bouns + ", hire_date=" + hire_date + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, bouns, firstName, hire_date, id, lastName, salary);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Instructor other = (Instructor) obj;
+		return Objects.equals(address, other.address)
+				&& Float.floatToIntBits(bouns) == Float.floatToIntBits(other.bouns)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(hire_date, other.hire_date)
+				&& id == other.id && Objects.equals(lastName, other.lastName)
+				&& Float.floatToIntBits(salary) == Float.floatToIntBits(other.salary);
+	}
+	
+	
+	
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+package Entity;
+
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "instructor_course")
+public class InstructorCourse {
+
+	private Long instructorId;
+	private Long courseId;
+	private String evaluation;
+	
+	public InstructorCourse() {
+		
+	}
+	
+	public InstructorCourse(Long instructorId, Long courseId, String evaluation) {
+		this.instructorId = instructorId;
+		this.courseId = courseId;
+		this.evaluation = evaluation;
+	}
+
+	public Long getInstructorId() {
+		return instructorId;
+	}
+
+	public void setInstructorId(Long instructorId) {
+		this.instructorId = instructorId;
+	}
+
+	public Long getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
+	}
+
+	public String getEvaluation() {
+		return evaluation;
+	}
+
+	public void setEvaluation(String evaluation) {
+		this.evaluation = evaluation;
+	}
+
+	@Override
+	public String toString() {
+		return "InstructorCourse [instructorId=" + instructorId + ", courseId=" + courseId + ", evaluation="
+				+ evaluation + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(courseId, evaluation, instructorId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InstructorCourse other = (InstructorCourse) obj;
+		return courseId == other.courseId && Objects.equals(evaluation, other.evaluation)
+				&& instructorId == other.instructorId;
+	}
+	
+	
+	
+}
+---------------------------------------------------------------------------------------------------------------------------------
+
+package Entity;
+
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Track {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	private String name;
+	
+	public Track() {
+		
+	}
+
+	public Track(long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Track [id=" + id + ", name=" + name + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Track other = (Track) obj;
+		return id == other.id && Objects.equals(name, other.name);
+	}
+
+	
+	
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+package Entity;
+
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class TrackCourse {
+	
+	private long trackId;
+	private long courseId;
+	
+	public TrackCourse() {
+		super();
+	}
+	
+	public TrackCourse(long trackId, long courseId) {
+		super();
+		this.trackId = trackId;
+		this.courseId = courseId;
+	}
+
+	public long getTrackId() {
+		return trackId;
+	}
+
+	public void setTrackId(long trackId) {
+		this.trackId = trackId;
+	}
+
+	public long getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(long courseId) {
+		this.courseId = courseId;
+	}
+
+	@Override
+	public String toString() {
+		return "TrackCourse [trackId=" + trackId + ", courseId=" + courseId + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(courseId, trackId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TrackCourse other = (TrackCourse) obj;
+		return courseId == other.courseId && trackId == other.trackId;
+	}
+	
+	
+	
+}
