@@ -1,0 +1,145 @@
+Create table Student(
+	stud_id serial primary key,
+	fname varchar(20),
+	lname varchar(20) not null,
+	birth_date date,
+	age Integer,
+	address varchar(50)
+);
+
+select * from student;
+
+Create Table course(
+	course_id serial primary key,
+	course_name varchar(30),
+	start_date date ,
+	duration_in_months float,
+	end_date date ,
+	description varchar(50)
+);
+
+select * from course;
+
+Create Table instructor(
+	ins_id serial primary Key,
+	fname varchar(20),
+	lname varchar(20),
+	address varchar(50),
+	salary float,
+	bouns float,
+	hire_date date
+);
+
+Create Table track(
+	track_id serial primary key,
+	track_name varchar(40)
+);
+
+Create table stud_course(
+	stud_id Integer,
+	course_id Integer,
+	grade float,
+	constraint stud_crs_fk 
+		FOREIGN KEY(stud_id)
+		references student(stud_id),
+	constraint crs_stud_fk
+		FOREIGN KEY(course_id)
+		references course(course_id),
+	constraint stud_course_pk
+		primary key (stud_id ,course_id)
+);
+
+Create table ins_course(
+	ins_id Integer,
+	course_id Integer,
+	evaluation varchar(60),
+	constraint ins_course_pk 
+		primary key(ins_id,course_id),
+	constraint ins_course_fk
+		FOREIGN KEY(ins_id)
+		REFERENCES instructor(ins_id),
+	constraint course_ins_fk
+		FOREIGN KEY(course_id) 
+		REFERENCES course(course_id)
+);
+	
+Create Table track_course(
+	track_id integer primary key,
+	course_id integer,
+	constraint track_crs_fk
+		foreign key (track_id)
+		references track(track_id),
+	constraint crs_track_fk
+		foreign key(course_id)
+		references course(course_id)
+);
+
+Create or replace trigger age_calculation
+before insert on student
+		for each ROW
+		Execute Function age_calc_func();
+		
+CREATE OR REPLACE FUNCTION age_calc_func()
+   RETURNS TRIGGER
+   LANGUAGE PLPGSQL
+AS $$
+BEGIN
+	NEW.age := Extract(year FROM AGE(NEW.birth_date::Date));
+   RETURN NEW;
+END;
+$$;
+
+Create or replace trigger end_date_calculation
+before insert on course
+		for each ROW
+		Execute Function end_date_calc_func();
+		
+CREATE OR REPLACE FUNCTION end_date_calc_func()
+   RETURNS TRIGGER
+   LANGUAGE PLPGSQL
+AS $$
+BEGIN
+-- 	NEW.age := Extract(year FROM AGE(NEW.birth_date::Date));
+	NEW.end_date := New.start_date + interval '1 month' * New.duration_in_months;
+   RETURN NEW;
+END;
+$$;
+
+Create or replace view course_schedule
+as
+	Select c.course_name , c.start_date , c.duration_in_months , c.end_date ,c.description  , concat(i.fname ,' ',i.lname) as "FullName"
+	from course c inner join ins_course ic
+	on ic.course_id = c.course_id
+	inner join instructor i
+	on i.ins_id = ic.ins_id
+	
+
+Create or replace view track_schedule
+as
+	Select t.track_name ,c.course_name , c.start_date , c.duration_in_months , c.end_date ,c.description  
+	from track_course tc left outer join track t
+	on tc.track_id = t.track_id
+	inner join course c
+	on c.course_id = tc.track_id
+
+Insert into course (course_name,start_date,duration_in_months,description)
+values ('Java' , '2024-8-24',3.0,'Profitional course for java');
+
+Insert into student(fname , lname ,address , birth_date)
+values ('Mohamed','Hesham','Cairo','2000-12-23');
+
+Insert into student(fname , lname ,address , birth_date)
+values ('Omar','Hesham','Cairo','2003-06-19');
+
+Select * from course;
+		
+select * from student;
+
+create function print(text) returns void as 
+$$ begin raise notice '%', $1; end 
+$$ language plpgsql;
+
+Delete from student;
+
+Delete from Course;
+
