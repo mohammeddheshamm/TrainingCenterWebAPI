@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.TrainingCenter.Entity.Course;
 import com.example.TrainingCenter.Entity.Student;
@@ -19,6 +20,7 @@ import com.example.TrainingCenter.Repository.CourseRepository;
 import com.example.TrainingCenter.Repository.StudentCourseRepository;
 import com.example.TrainingCenter.Repository.StudentRepository;
 
+@Service
 public class StudentCourseServiceImpl implements IGenericService<StudentCourse>{
 
 	@Autowired

@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.TrainingCenter.Entity.Instructor;
 import com.example.TrainingCenter.Exception.EntityAlreadyExistsException;
 import com.example.TrainingCenter.Exception.NoSuchEntityException;
 import com.example.TrainingCenter.Repository.InstructorRepository;
-
+@Service
 public class InstructorServiceImpl implements IGenericEntityService<Instructor> {
 
 	@Autowired

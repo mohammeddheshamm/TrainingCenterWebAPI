@@ -53,11 +53,9 @@ public class Student {
 		
 	}
 
-	public Student(Long id, String firstName, String lastName, int age, String address, Date birthDate) {
-		this.id = id;
+	public Student( String firstName, String lastName, String address, Date birthDate) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.age = age;
 		this.address = address;
 		this.birthDate = birthDate;
 	}
@@ -75,7 +73,7 @@ public class Student {
 		return id;
 	}
 
-	public void setId(Long id) {
+	private void setId(Long id) {
 		this.id = id;
 	}
 
@@ -99,7 +97,7 @@ public class Student {
 		return age;
 	}
 
-	public void setAge(int age) {
+	private void setAge(int age) {
 		this.age = age;
 	}
 
