@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.TrainingCenter.Entity.Instructor;
 import com.example.TrainingCenter.Exception.EntityAlreadyExistsException;
+import com.example.TrainingCenter.Exception.NoEntitiesYetException;
 import com.example.TrainingCenter.Exception.NoSuchEntityException;
 import com.example.TrainingCenter.Repository.InstructorRepository;
 @Service
@@ -18,7 +19,11 @@ public class InstructorServiceImpl implements IGenericEntityService<Instructor> 
 	
 	@Override
 	public List<Instructor> getAllElements() {
-		return repo.findAll();
+		List<Instructor> instructors = repo.findAll();
+		if(instructors == null) {
+			throw new NoEntitiesYetException("There is instructors added yet");
+		}
+		return instructors;
 	}
 
 	@Override
@@ -50,6 +55,7 @@ public class InstructorServiceImpl implements IGenericEntityService<Instructor> 
 			ins.setBouns(element.getBouns());
 			ins.setHireDate(element.getHireDate());
 			ins.setName(element.getName());
+			ins.setSalary(element.getSalary());
 			repo.save(ins);
 			return "Instructor Updated Successfully";
 		}

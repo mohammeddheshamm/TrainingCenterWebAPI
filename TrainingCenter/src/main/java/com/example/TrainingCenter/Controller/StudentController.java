@@ -29,7 +29,8 @@ public class StudentController {
 	@Autowired
 	StudentCourseServiceImpl stdCrs;
 	
-	@GetMapping(value = "/getAll", consumes = "application/json")
+	@GetMapping(value = "/getAll", 
+			produces = "application/json")
 	public List<Student> getAll(){
 		return std.getAllElements();
 	}
@@ -64,7 +65,6 @@ public class StudentController {
 	}
 	
 	@GetMapping(value = "/getCourseGrade/{stdId}/crsId",
-			consumes = "application/json",
 			produces = "application/json")
 	public CourseGradeDto getCourseWithGrade(@PathVariable Long stdId,Long crsId) {
 		StudentCourseKey key = new StudentCourseKey(stdId,crsId);

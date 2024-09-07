@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.TrainingCenter.Entity.Student;
 import com.example.TrainingCenter.Exception.EntityAlreadyExistsException;
+import com.example.TrainingCenter.Exception.NoEntitiesYetException;
 import com.example.TrainingCenter.Exception.NoSuchEntityException;
 import com.example.TrainingCenter.Repository.StudentRepository;
 
@@ -45,6 +46,7 @@ public class StudentServiceImpl implements IGenericEntityService<Student> {
 			exists.setFirstName(element.getFirstName());
 			exists.setLastName(element.getLastName());
 			exists.setAddress(element.getAddress());
+			exists.setBirthDate(element.getBirthDate());
 			studentRepo.save(exists);
 			return "Student updated successfully";
 		}
@@ -65,7 +67,11 @@ public class StudentServiceImpl implements IGenericEntityService<Student> {
 
 	@Override
 	public List<Student> getAllElements() {
-		return studentRepo.findAll();
+		List<Student> students = studentRepo.findAll();
+		if(students == null) {
+			throw new NoEntitiesYetException("There is Students added yet");
+		}
+		return students;
 	}
 	
 	
