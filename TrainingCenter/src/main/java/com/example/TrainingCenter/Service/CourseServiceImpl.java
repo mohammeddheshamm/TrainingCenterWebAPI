@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.TrainingCenter.Entity.Course;
 import com.example.TrainingCenter.Exception.EntityAlreadyExistsException;
+import com.example.TrainingCenter.Exception.NoEntitiesYetException;
 import com.example.TrainingCenter.Exception.NoSuchEntityException;
 import com.example.TrainingCenter.Repository.CourseRepository;
 @Service
@@ -18,7 +19,12 @@ public class CourseServiceImpl implements IGenericEntityService<Course>{
 	
 	@Override
 	public List<Course> getAllElements() {
-		return courseRepo.findAll();
+		
+		List<Course> courses = courseRepo.findAll();
+		if(courses == null) {
+			throw new NoEntitiesYetException("There is no courses yet.");
+		}
+		return courses;
 	}
 
 	@Override
