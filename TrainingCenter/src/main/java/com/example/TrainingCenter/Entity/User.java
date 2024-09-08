@@ -1,24 +1,32 @@
 package com.example.TrainingCenter.Entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "users")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO )
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "usr_id") 
-	private Long userId;
+	private Long Id;
 	@Column(name = "username")
-	private String userName;
+	private String username;
 	@Column(name = "email")
 	private String email;
 	@Column(name = "password")
@@ -32,33 +40,55 @@ public class User {
 	@OneToOne(mappedBy = "user")
 	private Instructor instructor;
 	
+	@ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+	@JoinTable(name = "user_roles" ,
+				joinColumns = @JoinColumn(name = "user_id" , referencedColumnName = "usr_id"),
+				inverseJoinColumns = @JoinColumn(name = "role_id" ,referencedColumnName = "id"))
+	private List<Role> roles = new ArrayList<>();
+	
+	public Long getId() {
+		return Id;
+	}
+
+	public void setId(Long id) {
+		Id = id;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 	public User() {
 		
 	}
 	
 	public User(Long userId, String userName, String email, String password, String phoneNumber) {
 		
-		this.userId = userId;
-		this.userName = userName;
+		this.Id = userId;
+		this.username = userName;
 		this.email = email;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
 	}
 
 	public Long getUserId() {
-		return userId;
+		return Id;
 	}
 
 	public void setUserId(Long userId) {
-		this.userId = userId;
+		this.Id = userId;
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public String getEmail() {
@@ -103,13 +133,13 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", email=" + email + ", password=" + password
+		return "User [userId=" + Id + ", userName=" + username + ", email=" + email + ", password=" + password
 				+ ", phoneNumber=" + phoneNumber + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, password, phoneNumber, userId, userName);
+		return Objects.hash(email, password, phoneNumber, Id, username);
 	}
 
 	@Override
@@ -122,8 +152,8 @@ public class User {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(email, other.email) && Objects.equals(password, other.password)
-				&& Objects.equals(phoneNumber, other.phoneNumber) && Objects.equals(userId, other.userId)
-				&& Objects.equals(userName, other.userName);
+				&& Objects.equals(phoneNumber, other.phoneNumber) && Objects.equals(Id, other.Id)
+				&& Objects.equals(username, other.username);
 	}
 	
 	
