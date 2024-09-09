@@ -9,6 +9,16 @@ public class RegisterDto {
 	private String email;
 	
 	private String phoneNumber;
+	
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	private void setRole(String role) {
+		this.role = role;
+	}
 
 	public String getUsername() {
 		return username;
@@ -52,7 +62,6 @@ public class RegisterDto {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
-	
-	
-	
+
 }
+

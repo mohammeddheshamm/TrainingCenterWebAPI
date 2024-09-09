@@ -1,6 +1,8 @@
 package com.example.TrainingCenter.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,7 @@ import com.example.TrainingCenter.Entity.Dtos.RegisterDto;
 import com.example.TrainingCenter.Exception.UsernameAlreadyTaken;
 import com.example.TrainingCenter.Repository.RoleRepository;
 import com.example.TrainingCenter.Repository.UserRepository;
+import com.example.TrainingCenter.Security.JWTGenerator;
 
 @Service
 public class AuthenticationServiceImpl {
@@ -33,13 +36,17 @@ public class AuthenticationServiceImpl {
 	@Autowired
 	PasswordEncoder passEncoder;
 	
+	@Autowired
+	JWTGenerator jwtGenerator;
+	
 	public String Login(LoginDto loginDto) {
 		Authentication authentication = authManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
 						loginDto.getUsername(),
 						loginDto.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		return "User logged in Successfully";
+		String token = jwtGenerator.generateToken(authentication);
+		return token;
 	}
 	
 	public String Register(RegisterDto registerDto) {
@@ -52,8 +59,13 @@ public class AuthenticationServiceImpl {
 		user.setPassword(passEncoder.encode((registerDto.getPassword())));
 		user.setEmail(registerDto.getEmail());
 		user.setPhoneNumber(registerDto.getPhoneNumber());
+		Role role = new Role();
+		role.setName(registerDto.getRole());
+		List<Role> list= new ArrayList<>();
+		list.add(role);
+		user.setRoles(list);
 		
-		Role roles = roleRepo.findByName("USER").get();
+		Role roles = roleRepo.findByName(registerDto.getRole()).get();
 		
 		user.setRoles(Collections.singletonList(roles));
 		

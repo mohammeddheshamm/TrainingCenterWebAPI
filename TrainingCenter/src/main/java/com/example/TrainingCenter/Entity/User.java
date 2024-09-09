@@ -27,12 +27,14 @@ public class User {
 	private Long Id;
 	@Column(name = "username")
 	private String username;
-	@Column(name = "email")
+	@Column(name = "email", unique = true)
 	private String email;
 	@Column(name = "password")
 	private String password;
 	@Column(name = "phone_number")
 	private String phoneNumber;
+	
+	private boolean enabled;
 	
 	@OneToOne(mappedBy = "user")
 	private Student student;
@@ -154,6 +156,14 @@ public class User {
 		return Objects.equals(email, other.email) && Objects.equals(password, other.password)
 				&& Objects.equals(phoneNumber, other.phoneNumber) && Objects.equals(Id, other.Id)
 				&& Objects.equals(username, other.username);
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 	
