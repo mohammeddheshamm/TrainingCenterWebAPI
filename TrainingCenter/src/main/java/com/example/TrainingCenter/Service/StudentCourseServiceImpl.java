@@ -146,8 +146,5 @@ public class StudentCourseServiceImpl implements IGenericService<StudentCourse>{
 		throw new NoSuchEntityException("This Element is not found");
 	}
 	
-	public String courseRegisterationByCourseId(Long Id) {
-		return null;
-	}
-
+	
 }

@@ -44,17 +44,7 @@ public class SecurtityConfig {
 		.and()
 		.httpBasic();
 		
-//		http.authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/").hasAnyAuthority("USER", "INSTRUCTOR", "STUDENT", "ADMIN")
-//                .requestMatchers("/new").hasAnyAuthority("ADMIN", "CREATOR")
-//                .requestMatchers("/edit/**").hasAnyAuthority("ADMIN", "EDITOR")
-//                .requestMatchers("/delete/**").hasAuthority("ADMIN")
-//                .anyRequest().authenticated()
-//            )
-//            .formLogin(login -> login.permitAll())
-//            .logout(logout -> logout.permitAll())
-//            .exceptionHandling(eh -> eh.accessDeniedPage("/403"))
-//            ;
+
 		 
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	       

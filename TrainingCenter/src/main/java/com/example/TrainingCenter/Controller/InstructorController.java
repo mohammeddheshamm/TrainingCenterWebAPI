@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.TrainingCenter.Entity.Course;
 import com.example.TrainingCenter.Entity.Instructor;
+import com.example.TrainingCenter.Entity.InstructorCourse;
+import com.example.TrainingCenter.Entity.Keys.InstructorCourseKey;
 import com.example.TrainingCenter.Service.InstructorCourseServiceImpl;
 import com.example.TrainingCenter.Service.InstructorServiceImpl;
 
@@ -28,6 +30,7 @@ public class InstructorController {
 	
 	@Autowired
 	InstructorCourseServiceImpl insCrs;
+	
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(value = "/getAllInstructors"
@@ -70,4 +73,23 @@ public class InstructorController {
 		return insCrs.getAllCoursesTeachedByInsByInstructorId(id);
 	}
 	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping(value = "/assignCourseToInstructor",
+							consumes = "application/json")
+	public String assignCourseToInstructor(Instructor ins , Course crs) {
+		InstructorCourseKey key = new InstructorCourseKey(ins.getId(),crs.getId());
+		InstructorCourse insCrsObj = new InstructorCourse(key, ins,crs,"");
+		
+		return insCrs.addElement(insCrsObj);
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@DeleteMapping(value = "/dischargeInstructorFromCourseTeaching",
+						consumes = "application/json")
+	public String dischargeInstructorFromCourseTeaching (Instructor ins , Course crs) {
+		InstructorCourseKey key = new InstructorCourseKey(ins.getId(),crs.getId());
+		InstructorCourse insCrsObj = new InstructorCourse(key, ins,crs,"");
+		
+		return insCrs.deleteElement(insCrsObj);
+	}
 }

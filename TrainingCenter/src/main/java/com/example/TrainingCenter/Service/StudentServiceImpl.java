@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.TrainingCenter.Entity.Student;
+
 import com.example.TrainingCenter.Exception.EntityAlreadyExistsException;
 import com.example.TrainingCenter.Exception.NoEntitiesYetException;
 import com.example.TrainingCenter.Exception.NoSuchEntityException;
@@ -17,6 +18,7 @@ public class StudentServiceImpl implements IGenericEntityService<Student> {
 
 	@Autowired
 	StudentRepository studentRepo;
+	
 	
 	@Override
 	public Student getElementById(Long id) {

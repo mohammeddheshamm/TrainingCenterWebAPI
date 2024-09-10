@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.TrainingCenter.Entity.Course;
 import com.example.TrainingCenter.Entity.Student;
+import com.example.TrainingCenter.Entity.StudentCourse;
 import com.example.TrainingCenter.Entity.Dtos.CourseGradeDto;
 import com.example.TrainingCenter.Entity.Keys.StudentCourseKey;
 import com.example.TrainingCenter.Service.StudentCourseServiceImpl;
@@ -76,11 +77,40 @@ public class StudentController {
 	}
 	
 	
-	@PreAuthorize("hasAuthority('STUDENT') or hasAuthority('ADMIN') or hasAuthority('INSTRUCTOR')")
+	@PreAuthorize("hasAuthority('STUDENT') and hasAuthority('ADMIN') and hasAuthority('INSTRUCTOR')")
 	@GetMapping(value = "/getCourseGrade/{stdId}/crsId",
 			produces = "application/json")
 	public CourseGradeDto getCourseWithGrade(@PathVariable Long stdId,Long crsId) {
 		StudentCourseKey key = new StudentCourseKey(stdId,crsId);
 		return stdCrs.getCourseWithGradeByStudentCourseId(key);
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STUDENT')")
+	@PostMapping(value = "/registerCourseToStudent",
+							consumes = "application/json")
+	public String registerCourseToStudent(Student student , Course course) {
+		StudentCourseKey key = new StudentCourseKey(student.getId(),course.getId());
+		StudentCourse stdCrsObj = new StudentCourse(key,student,course,0);
+		
+		return stdCrs.addElement(stdCrsObj);
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STUDENT')")
+	@DeleteMapping(value = "/cancelCourseToStudent",
+							consumes = "application/json")
+	public String cancelCourseRegisteration(Student student , Course course) {
+		StudentCourseKey key = new StudentCourseKey(student.getId(),course.getId());
+		StudentCourse stdCrsObj = new StudentCourse(key,student,course,0);
+		
+		return stdCrs.deleteElement(stdCrsObj);
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('INSTRUCTOR')")
+	@PutMapping(value = "/updateCourseGrade" ,consumes = "application/json")
+	public String updateCourseGrade(Student std ,Course crs ,float grade) {
+		StudentCourseKey key = new StudentCourseKey(std.getId(),crs.getId());
+		StudentCourse stdCrsObj = new StudentCourse(key,std,crs,grade);
+		
+		return stdCrs.updateElement(stdCrsObj);
 	}
 }
