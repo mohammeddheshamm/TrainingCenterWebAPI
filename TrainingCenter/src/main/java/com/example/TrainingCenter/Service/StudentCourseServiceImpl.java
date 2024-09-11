@@ -107,14 +107,20 @@ public class StudentCourseServiceImpl implements IGenericService<StudentCourse>{
 	}
 	
 	@Override
-	public String addElement(StudentCourse element) {
+	public String addElement(StudentCourse stdCrs) {
+		Student std =  stdRepo.findById(stdCrs.getStudent().getId()).orElseThrow(() -> new NoSuchEntityException("There is no student by this id : "+stdCrs.getStudent().getId()));
+		Course crs = crsRepo.findById(stdCrs.getCourse().getId()).orElseThrow(() -> new NoSuchEntityException("There is no course by this ID : "+stdCrs.getCourse().getId())) ;
+		
+		StudentCourseKey key = new StudentCourseKey(std.getId(),crs.getId());
+		StudentCourse stdCrsObj = new StudentCourse(key,std,crs,0);
+		
 		List<StudentCourse> list = repo.findAll();
 		for(StudentCourse x : list) {
-			if(x.getId().equals(element.getId())) {
+			if(x.getId().equals(stdCrsObj.getId())) {
 				throw new EntityAlreadyExistsException("This Element already exists.");
 			}
 		}
-		repo.save(element);
+		repo.save(stdCrsObj);
 		return "StudentCourse Added Successfully";
 	}
 

@@ -24,7 +24,7 @@ public class Student {
 	private String lastName;
 	
 	@Column(name = "age")
-	private int age;
+	private int age = 0;
 	
 	@Column(name = "address")
 	private String address;
